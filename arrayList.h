@@ -48,7 +48,7 @@ public:
     /**
     *  add a new value to the end of the arrayList
     */
-    void push_back(type value);
+    void push_back(const type& value);
 
     /**
     *  remove a value from the end of the arrayList
@@ -77,14 +77,14 @@ public:
     /**
     *  return index of a given value if the given value is not there then it return -1
     */
-    int contain(type value) const;
+    int contain(const type& value) const;
 
     /**
     *  insert <code>value</code> at given index <code>index</code>
     *  @throw Exception if the index is not in the array range from 0
     *         up to the length of arrayList.
     */
-    void insert(int index, type value);
+    void insert(int index, const type& value);
 
     /**
     *  return true if arrayList is empty else return false
@@ -103,7 +103,7 @@ public:
     *  @throw Exception if the index is not in the array range from 0
     *         up to the length of arrayList.
     */
-    void set(int index, type value);
+    void set(int index, const type& value);
 
     /**
     *  return size of arrayList
@@ -209,7 +209,7 @@ public:
     /**
      * Produces a arrayList formed by appending the given value to this arrayList.
      */
-    arrayList operator+(type value) ;
+    arrayList operator+(const type& value) ;
     /**
      * Adds all of the elements from <code>list</code> to the end of this arrayList.
      */
@@ -218,17 +218,17 @@ public:
     /**
      * Adds the single specified value to the end of the arrayList.
      */
-    void operator+=(type value);
+    void operator+=(const type& value);
 
     /**
      * Produces a arrayList formed by removing the given value to this arrayList.
      */
-    arrayList operator-(type value) ;
+    arrayList operator-(const type& value) ;
 
     /**
      * Remove the single specified value to the end of the arrayList.
      */
-    void operator-=(type value);
+    void operator-=(const type& value);
 
     /// Unary Operator
 
@@ -299,7 +299,7 @@ arrayList<type>::~arrayList() {
 }
 
 template <typename type>
-void arrayList<type>::push_back(type value) {
+void arrayList<type>::push_back(const type& value) {
     insert(_size, value);
 }
 
@@ -327,7 +327,7 @@ type arrayList<type>::at(int index) const {
 }
 
 template <typename type>
-int arrayList<type>::contain(type value) const {
+int arrayList<type>::contain(const type& value) const {
     for (int i = 0; i < _size; i++)
         if (_arrayList[i] == value)
             return i;
@@ -335,7 +335,7 @@ int arrayList<type>::contain(type value) const {
 }
 
 template <typename type>
-void arrayList<type>::insert(int index, type value) {
+void arrayList<type>::insert(int index, const type& value) {
     if (index > _size)
         throw "Exception :-(";
     else {
@@ -386,7 +386,7 @@ void arrayList<type>::remove(int index) {
 }
 
 template <typename type>
-void arrayList<type>::set(int index, type value) {
+void arrayList<type>::set(int index, const type& value) {
     _arrayList[index] = value;
 }
 
@@ -615,7 +615,7 @@ arrayList<type> arrayList<type>::operator+(arrayList& list) {
 }
 
 template <typename type>
-arrayList<type> arrayList<type>::operator+(type value) {
+arrayList<type> arrayList<type>::operator+(const type& value) {
     arrayList<type> list1;
 
     list1.addAll(subList(0));
@@ -630,12 +630,12 @@ void arrayList<type>::operator+=(const arrayList& list) {
 }
 
 template <typename type>
-void arrayList<type>::operator+=(type value) {
+void arrayList<type>::operator+=(const type& value) {
     push_back(value);
 }
 
 template <typename type>
-arrayList<type> arrayList<type>::operator-(type value) {
+arrayList<type> arrayList<type>::operator-(const type& value) {
     arrayList<type> list1;
 
     list1.addAll(subList(0));
@@ -648,7 +648,7 @@ arrayList<type> arrayList<type>::operator-(type value) {
 }
 
 template <typename type>
-void arrayList<type>::operator-=(type value) {
+void arrayList<type>::operator-=(const type& value) {
     if (contain(value) != -1)
         remove(contain(value));
 }

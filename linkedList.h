@@ -49,12 +49,12 @@ public:
     /**
     *  Add element at the start of linkedList
     */
-    void push_front(type value);
+    void push_front(const type& value);
 
     /**
     *  Add element at the end of linkedList
     */
-    void push_back(type value);
+    void push_back(const type& value);
 
     /**
     *  Remove element from the start of linkedList
@@ -80,13 +80,13 @@ public:
     /**
     *  Return index of <code>value</code> if not there there then it return -1
     */
-    int contain(type value);
+    int contain(const type& value);
 
     /**
     *  Insert a <code>value</code> at given index <code>index</code>
     *  @throw Exception if the index is not in range of linkedList
     */
-    void insert(int index, type value);
+    void insert(int index, const type& value);
 
     /**
     *  Return true if the linkedList is empty or else return false
@@ -110,7 +110,7 @@ public:
     *  Set the <code>value</code> of the given index <code>index</code>
     *  @throw Exception if index is not in range of linkedList
     */
-    void set(int index, type value);
+    void set(int index, const type& value);
 
     /**
     *  return the size of linkedList
@@ -202,7 +202,7 @@ public:
     /**
      * Produces a linkedList formed by appending the given value to this linkedList.
      */
-    linkedList operator+(type value) ;
+    linkedList operator+(const type& value) ;
     /**
      * Adds all of the elements from <code>list</code> to the end of this linkedList.
      */
@@ -211,17 +211,17 @@ public:
     /**
      * Adds the single specified value to the end of the linkedList.
      */
-    void operator+=(type value);
+    void operator+=(const type& value);
 
     /**
      * Produces a linkedList formed by removing the given value to this linkedList.
      */
-    linkedList operator-(type value) ;
+    linkedList operator-(const type& value) ;
 
     /**
      * Remove the single specified value to the end of the linkedList.
      */
-    void operator-=(type value);
+    void operator-=(const type& value);
 
     /// Unary Operator
 
@@ -276,12 +276,12 @@ linkedList<type>::~linkedList() {
 }
 
 template <typename type>
-void linkedList<type>::push_front(type value) {
+void linkedList<type>::push_front(const type& value) {
     insert(0, value);
 }
 
 template <typename type>
-void linkedList<type>::push_back(type value) {
+void linkedList<type>::push_back(const type& value) {
     insert(_size, value);
 }
 
@@ -325,7 +325,7 @@ type linkedList<type>::at(int index) {
 }
 
 template <typename type>
-int linkedList<type>::contain(type value) {
+int linkedList<type>::contain(const type& value) {
     Node<type>* temp = start;
     for (int i = 0; i < _size; i++) {
         if (temp->data == value)
@@ -336,7 +336,7 @@ int linkedList<type>::contain(type value) {
 }
 
 template <typename type>
-void linkedList<type>::insert(int index, type value) {
+void linkedList<type>::insert(int index, const type& value) {
     if (index > _size)
         throw "Exception :-(";
     else if (start == nullptr) {
@@ -383,6 +383,14 @@ void linkedList<type>::remove(int index) {
         delete trash;
         _size--;
     }
+}
+
+template <typename type>
+void linkedList<type>::set(int index, const type& value) {
+    Node<type>* temp = start;
+    for (int i = 0; i < index; i++)
+        temp = temp->next;
+    temp->data = value;
 }
 
 template <typename type>
@@ -656,7 +664,7 @@ linkedList<type> linkedList<type>::operator+(linkedList& list) {
 }
 
 template <typename type>
-linkedList<type> linkedList<type>::operator+(type value) {
+linkedList<type> linkedList<type>::operator+(const type& value) {
     linkedList<type> list;
     Node<type>* temp = start;
     while (temp != nullptr) {
@@ -673,12 +681,12 @@ void linkedList<type>::operator+=(const linkedList& list) {
 }
 
 template <typename type>
-void linkedList<type>::operator+=(type value) {
+void linkedList<type>::operator+=(const type& value) {
     push_back(value);
 }
 
 template <typename type>
-linkedList<type> linkedList<type>::operator-(type value) {
+linkedList<type> linkedList<type>::operator-(const type& value) {
     linkedList<type> list;
     Node<type>* temp = start;
     Node<type>* trash;
@@ -699,7 +707,7 @@ linkedList<type> linkedList<type>::operator-(type value) {
 }
 
 template <typename type>
-void linkedList<type>::operator-=(type value) {
+void linkedList<type>::operator-=(const type& value) {
     int val = contain(value);
     if (val != -1)
         remove(val);
