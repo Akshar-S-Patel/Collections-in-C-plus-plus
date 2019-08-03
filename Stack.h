@@ -4,6 +4,7 @@
 // My includes
 #include "arrayList.h"
 #include <iostream>
+#include <initializer_list>
 
 using namespace std;
 
@@ -26,15 +27,21 @@ public:
     Stack() = default;
 
     /**
+    *  Copy Constructor - use the passed Stack to initialization itself (deep copy)
+    *  Take Constructor - use the passed Stack to initialization itself (shallow copy)
+    */
+    Stack(const Stack& stack);    ///Copy Constructor
+    Stack(Stack&& stack);   ///Take Constructor
+
+    /**
+    *  Create a stack using initializer list
+    */
+    Stack(initializer_list<type> stack);
+
+    /**
     *  Frees any heap storage associated with this stack.
     */
     ~Stack() = default;
-
-    /**
-    *  Copy Constructor - use the passed Stack to initialization itself (deep copy)
-    */
-    Stack(Stack& stack);
-    Stack(Stack&& stack);
 
     ///  member function (methods)
 
@@ -101,8 +108,9 @@ public:
     /**
      * Overloads = to assign new Stack to left Stack
      */
-    void operator=(Stack& stack);
-    void operator=(Stack&& stack);
+    Stack& operator=(Stack& stack);   ///Copy assignment operator
+    Stack& operator=(Stack&& stack);  ///Take assignment operator
+
 
     /**
     *  Returns <code>true</code> if <code>stack1</code> and <code>stack</code>
@@ -147,13 +155,17 @@ private:
 };
 
 template <typename type>
-Stack<type>::Stack(Stack& stack) {
-    _elements.addAll(stack._elements);
+Stack<type>::Stack(const Stack& stack) {
+    _elements = stack._elements;
 }
 
 template <typename type>
 Stack<type>::Stack(Stack&& stack){
-    _elements.addAll(stack._elements);
+    _elements = stack._elements;
+}
+
+template <typename type>
+Stack<type>::Stack(initializer_list<type> stack) : _elements(stack) {
 }
 
 template <typename type>
@@ -218,16 +230,19 @@ type Stack<type>::operator--() {
 }
 
 template <typename type>
-void Stack<type>::operator=(Stack& stack) {
-    _elements.clear();
-    _elements.addAll(stack._elements);
+Stack<type>& Stack<type>::operator=(Stack& stack) {
+    if (this != &stack)
+        _elements = stack._elements;
+    return *this;
 }
 
 template <typename type>
-void Stack<type>::operator=(Stack&& stack) {
-    _elements.clear();
-    _elements.addAll(stack._elements);
+Stack<type>& Stack<type>::operator=(Stack&& stack) {
+    if (this != &stack)
+        _elements = stack._elements;
+    return *this;
 }
+
 
 template <typename type>
 bool Stack<type>::operator==(const Stack& stack) const {

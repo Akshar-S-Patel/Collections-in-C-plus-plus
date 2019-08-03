@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <initializer_list>
 
 using namespace std;
 
@@ -34,15 +35,20 @@ public:
     linkedList();
 
     /**
+    *  Copy Constructor - use the passed linkedList to initialization itself (deep copy)
+    */
+    linkedList(const linkedList& list); ///Copy Constructor
+    linkedList(linkedList&& list);      ///Take Constructor
+
+    /**
+    *  Use a initializer list to set up linked list
+    */
+    linkedList(initializer_list<type> list);
+
+    /**
     *  Clean up all the memory which are allocated by linkedList object
     */
     ~linkedList();
-
-    /**
-    *  Copy Constructor - use the passed linkedList to initialization itself (deep copy)
-    */
-    linkedList(linkedList& list);
-    linkedList(linkedList&& list);
 
     ///  member function (methods)
 
@@ -175,8 +181,8 @@ public:
     /**
      * Overloads = to assign new linkedList to left linkedList
      */
-    void operator=(linkedList&& list);
-    void operator=(linkedList& list);
+    linkedList& operator=(const linkedList& list);
+    linkedList& operator=(linkedList&& list);
 
     /**
      * Relational operators to compare two linkedList.
@@ -249,7 +255,7 @@ linkedList<type>::linkedList() {
 }
 
 template <typename type>
-linkedList<type>::linkedList(linkedList& list) {
+linkedList<type>::linkedList(const linkedList& list) {
     _size = 0;
     start = nullptr;
     Node<type>* temp = list.start;
@@ -262,12 +268,16 @@ linkedList<type>::linkedList(linkedList& list) {
 template <typename type>
 linkedList<type>::linkedList(linkedList&& list) {
     _size = 0;
+    start = list.start;
+    list.start = nullptr;
+}
+
+template <typename type>
+linkedList<type>::linkedList(initializer_list<type> list) {
     start = nullptr;
-    Node<type>* temp = list.start;
-    while (temp != nullptr) {
-        push_back(temp->data);
-        temp = temp->next;
-    }
+    _size = 0;
+    for (type i : list)
+        push_back(i);
 }
 
 template <typename type>
@@ -544,23 +554,22 @@ type linkedList<type>::operator[](int index) {
 
 
 template <typename type>
-void linkedList<type>::operator=(linkedList&& list) {
-    clear();
-    Node<type>* temp = list.start;
-    while (temp != nullptr) {
-        push_back(temp->data);
-        temp = temp->next;
+linkedList<type>& linkedList<type>::operator=(const linkedList& list) {
+    if (this != &list) {
+        Node<type>* temp = list.start;
+        while (temp != nullptr) {
+            push_back(temp->data);
+            temp = temp->next;
+        }
     }
+    return *this;
 }
 
 template <typename type>
-void linkedList<type>::operator=(linkedList& list) {
-    clear();
-    Node<type>* temp = list.start;
-    while (temp != nullptr) {
-        push_back(temp->data);
-        temp = temp->next;
-    }
+linkedList<type>& linkedList<type>::operator=(linkedList&& list) {
+    start = list.start;
+    list.start = nullptr;
+    return *this;
 }
 
 template <typename type>

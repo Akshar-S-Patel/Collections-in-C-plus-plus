@@ -1,8 +1,9 @@
 #ifndef _arraylist_h
 #define _arraylist_h
 
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
+#include <initializer_list>
 using namespace std;
 
 /**
@@ -36,8 +37,15 @@ public:
     /**
     *  Copy Constructor - use the passed arrayList to initialization itself (deep copy)
     */
-    arrayList(arrayList& list);
-    arrayList(arrayList&& list);
+    arrayList(const arrayList& list);     ///Copy Construction
+    arrayList(arrayList&& list);          ///Move Constructor
+
+
+    /**
+     * Uses an initializer list to set up the arrayList.
+     */
+    arrayList(initializer_list<type> list);
+
 
     /**
     *  Clean up all heap memory that are allocate by arrayList object
@@ -182,8 +190,8 @@ public:
     /**
      * Overloads = to assign new arrayList to left arrayList
      */
-    void operator=(arrayList&& list);
-    void operator=(arrayList& list);
+    arrayList& operator=(arrayList& list); ///Copy assignment operator
+    arrayList& operator=(arrayList&& list);  ///Take assignment operator
 
     /**
      * Relational operators to compare two arrayList.
@@ -257,6 +265,8 @@ arrayList<type>::arrayList() {
 
 template <typename type>
 arrayList<type>::arrayList(int size) {
+    if (size < 0)
+        throw "Exception :-(";
     _arrayList = new type[size]();
     _size = 0;
     _capacity = size;
@@ -264,6 +274,8 @@ arrayList<type>::arrayList(int size) {
 
 template <typename type>
 arrayList<type>::arrayList(int size, type value) {
+    if (size < 0)
+        throw "Exception :-(";
     _arrayList = new type[size];
 
     for (int i = 0; i < size; i++)
@@ -274,7 +286,7 @@ arrayList<type>::arrayList(int size, type value) {
 }
 
 template <typename type>
-arrayList<type>::arrayList(arrayList& list) {
+arrayList<type>::arrayList(const arrayList& list) {
     _size = list._size;
     _capacity = list.capacity();
     _arrayList = new type[_capacity];
@@ -287,10 +299,17 @@ template <typename type>
 arrayList<type>::arrayList(arrayList&& list) {
     _size = list._size;
     _capacity = list.capacity();
-    _arrayList = new type[_capacity];
+    _arrayList = list._arrayList;
+    list._arrayList = nullptr;
+}
 
-    for (int i = 0; i < _size; i++)
-        _arrayList[i] = list._arrayList[i];
+template <typename type>
+arrayList<type>::arrayList(initializer_list<type> list) {
+    _arrayList = new type[1]();
+    _size = 0;
+    _capacity = 1;
+    for (type i : list)
+        push_back(i);
 }
 
 template <typename type>
@@ -518,25 +537,26 @@ type& arrayList<type>::operator[](const int index) const {
 }
 
 template <typename type>
-void arrayList<type>::operator=(arrayList&& list) {
-    delete[] _arrayList;
-    _size = list._size;
-    _capacity = list.capacity();
-    _arrayList = new type[_capacity];
+arrayList<type>& arrayList<type>::operator=(arrayList& list) {
+    if (this != &list) {
+        delete[] _arrayList;
+        _size = list._size;
+        _capacity = list.capacity();
+        _arrayList = new type[_capacity];
 
-    for (int i = 0; i < _size; i++)
-        _arrayList[i] = list._arrayList[i];
+        for (int i = 0; i < _size; i++)
+            _arrayList[i] = list._arrayList[i];
+    }
+    return *this;
 }
 
 template <typename type>
-void arrayList<type>::operator=(arrayList& list) {
-    delete[] _arrayList;
+arrayList<type>& arrayList<type>::operator=(arrayList&& list) {
     _size = list._size;
     _capacity = list.capacity();
-    _arrayList = new type[_capacity];
-
-    for (int i = 0; i < _size; i++)
-        _arrayList[i] = list._arrayList[i];
+    _arrayList = list._arrayList;
+    list._arrayList = nullptr;
+    return *this;
 }
 
 template <typename type>
