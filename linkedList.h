@@ -81,12 +81,12 @@ public:
     *  return the element at given index <code>index</code>
     *  @throw Exception if the index is not in range of linkedList
     */
-    type at(int index);
+    type at(int index) const;
 
     /**
     *  Return index of <code>value</code> if not there there then it return -1
     */
-    int contain(const type& value);
+    int contain(const type& value) const;
 
     /**
     *  Insert a <code>value</code> at given index <code>index</code>
@@ -97,7 +97,7 @@ public:
     /**
     *  Return true if the linkedList is empty or else return false
     */
-    bool empty();
+    bool empty() const;
 
     /**
      * Returns <code>true</code> if this stack contains exactly the same values
@@ -126,12 +126,12 @@ public:
     /**
     *  return the first element of linkedList
     */
-    type front();
+    type front() const;
 
     /**
     *  return the last element of linkedList
     */
-    type back();
+    type back() const;
 
     /**
     *  swap the linkedList with given linkedList
@@ -176,7 +176,7 @@ public:
 
     /// Operator overloading
 
-    type operator[](int index);
+    type operator[](int index) const;
 
     /**
      * Overloads = to assign new linkedList to left linkedList
@@ -322,7 +322,7 @@ bool linkedList<type>::equals(const linkedList<type>& list) const {
 }
 
 template <typename type>
-type linkedList<type>::at(int index) {
+type linkedList<type>::at(int index) const {
     if (index >= _size)
         throw "Exception :-(";
     else {
@@ -335,7 +335,7 @@ type linkedList<type>::at(int index) {
 }
 
 template <typename type>
-int linkedList<type>::contain(const type& value) {
+int linkedList<type>::contain(const type& value) const {
     Node<type>* temp = start;
     for (int i = 0; i < _size; i++) {
         if (temp->data == value)
@@ -368,7 +368,7 @@ void linkedList<type>::insert(int index, const type& value) {
 }
 
 template <typename type>
-bool linkedList<type>::empty() {
+bool linkedList<type>::empty() const {
     return !_size;
 }
 
@@ -409,12 +409,12 @@ int linkedList<type>::size() const {
 }
 
 template <typename type>
-type linkedList<type>::front() {
+type linkedList<type>::front() const {
     return at(0);
 }
 
 template <typename type>
-type linkedList<type>::back() {
+type linkedList<type>::back() const {
     return at(_size - 1);
 }
 
@@ -548,7 +548,7 @@ void linkedList<type>::sort() {
 }
 
 template <typename type>
-type linkedList<type>::operator[](int index) {
+type linkedList<type>::operator[](int index) const {
     return at(index);
 }
 
@@ -744,6 +744,7 @@ ostream& operator<<(ostream& out, linkedList<type>& list) {
         temp = temp->next;
     }
     out << "}";
+    return out;
 }
 
 

@@ -11,7 +11,7 @@ using namespace std;
 /**
  * This class models a linear structure called a stack
  * in which values are added and removed only from one end.
- * This discipline gives rise to a last-in/first-out behavior (LIFO)
+ * This data-structure gives rise to a last-in/first-out behavior (LIFO)
  * that is the defining feature of stacks.  The fundamental stack
  * operations are <code>push</code> (add to top) and <code>pop</code>
  * (remove from top).
@@ -31,7 +31,7 @@ public:
     *  Take Constructor - use the passed Stack to initialization itself (shallow copy)
     */
     Stack(const Stack& stack);    ///Copy Constructor
-    Stack(Stack&& stack);   ///Take Constructor
+    Stack(Stack&& stack);        ///Take Constructor
 
     /**
     *  Create a stack using initializer list
@@ -41,7 +41,7 @@ public:
     /**
     *  Frees any heap storage associated with this stack.
     */
-    ~Stack() = default;
+    virtual ~Stack() = default;
 
     ///  member function (methods)
 
@@ -95,7 +95,7 @@ public:
     *  Returns the value of top element from this stack, without removing
     *  it.
     */
-    type& top();
+    const type& top();
 
     /// Operator Overloading
 
@@ -215,7 +215,7 @@ int Stack<type>::size() const {
 }
 
 template <typename type>
-type& Stack<type>::top() {
+const type& Stack<type>::top() {
     return _elements[_elements.size() - 1];
 }
 
