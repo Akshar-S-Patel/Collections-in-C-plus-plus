@@ -87,6 +87,11 @@ public:
     bool empty() const;
 
     /**
+    *  Swap the two Queue
+    */
+    void swap(Queue& queue);
+
+    /**
     *  Returns the first value in the queue, without removing it.
     *  @throw "Exception" for empty queue
     */
@@ -148,6 +153,9 @@ public:
     template <typename T>
     friend ostream& operator<<(ostream& out, Queue<T>& queue);
 
+    template <typename T>
+    friend ostream& operator<<(ostream& out, const Queue<T>& queue);
+
 private:
     linkedList<type> _elements;
 };
@@ -170,7 +178,7 @@ template <typename type>
 const type& Queue<type>::back() const {
     if (empty())
         throw "Exception :-(";
-    return _elements[_elements.size() - 1];
+    return _elements.back();
 }
 
 template <typename type>
@@ -199,7 +207,7 @@ bool Queue<type>::equals(const Queue<type>& queue) const {
 
 template <typename type>
 const type& Queue<type>::front() const {
-    return _elements[0];
+    return _elements.front();
 }
 
 template <typename type>
@@ -222,6 +230,11 @@ type Queue<type>::remove() {
 template <typename type>
 int Queue<type>::size() const {
     return _elements.size();
+}
+
+template <typename type>
+void Queue<type>::swap(Queue<type>& queue) {
+    _elements.swap(queue._elements);
 }
 
 template <typename type>
@@ -294,6 +307,15 @@ void Queue<type>::operator+=(const type& value) {
 
 template <typename type>
  ostream& operator<<(ostream& out, Queue<type>& queue) {
+    out << "{";
+    for (int i = 0; i < queue._elements.size(); i++)
+        out << " " << queue._elements[i];
+    out << " }";
+    return out;
+ }
+
+ template <typename type>
+ ostream& operator<<(ostream& out, const Queue<type>& queue) {
     out << "{";
     for (int i = 0; i < queue._elements.size(); i++)
         out << " " << queue._elements[i];

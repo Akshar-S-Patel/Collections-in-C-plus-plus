@@ -64,11 +64,13 @@ public:
 
     /**
     *  Remove element from the start of linkedList
+    *  @throw "Exception" if linkedList is empty
     */
     void pop_back();
 
     /**
     *  Remove element from the start of linkedList
+    *  @throw "Exception" if linkedList is empty
     */
     void pop_front();
 
@@ -125,13 +127,17 @@ public:
 
     /**
     *  return the first element of linkedList
+    *  @throw "Exception" if linkedList is empty
     */
-    type front() const;
+    type& front();
+    const type& front() const;
 
     /**
     *  return the last element of linkedList
+    *  @throw "Exception" if linkedList is empty
     */
-    type back() const;
+    type& back();
+    const type& back() const;
 
     /**
     *  swap the linkedList with given linkedList
@@ -242,6 +248,9 @@ public:
     template <typename T>
     friend ostream& operator<<(ostream& out, linkedList<T>& list);
 
+    template <typename T>
+    friend ostream& operator<<(ostream& out, const linkedList<T>& list);
+
 private:
 
     Node<type>* start;
@@ -297,11 +306,15 @@ void linkedList<type>::push_back(const type& value) {
 
 template <typename type>
 void linkedList<type>::pop_front() {
+    if (start == nullptr)
+        throw "Exception :-(";
     remove(0);
 }
 
 template <typename type>
 void linkedList<type>::pop_back() {
+    if (start == nullptr)
+        throw "Exception :-(";
     remove(_size - 1);
 }
 
@@ -323,7 +336,7 @@ bool linkedList<type>::equals(const linkedList<type>& list) const {
 
 template <typename type>
 type linkedList<type>::at(int index) const {
-    if (index >= _size)
+    if (index >= _size || index < 0)
         throw "Exception :-(";
     else {
         Node<type>* temp = start;
@@ -347,7 +360,7 @@ int linkedList<type>::contain(const type& value) const {
 
 template <typename type>
 void linkedList<type>::insert(int index, const type& value) {
-    if (index > _size)
+    if (index > _size || index < 0)
         throw "Exception :-(";
     else if (start == nullptr) {
         Node<type>* newNode = new Node<type>(value);
@@ -374,7 +387,7 @@ bool linkedList<type>::empty() const {
 
 template <typename type>
 void linkedList<type>::remove(int index) {
-    if (index >= _size)
+    if (index >= _size || index < 0)
         throw "Exception :-(";
     else if (start == nullptr)
         throw "Exception :-(";
@@ -409,13 +422,39 @@ int linkedList<type>::size() const {
 }
 
 template <typename type>
-type linkedList<type>::front() const {
-    return at(0);
+type& linkedList<type>::front() {
+    if (start == nullptr)
+        throw "Exception :-(";
+    return start->data;
 }
 
 template <typename type>
-type linkedList<type>::back() const {
-    return at(_size - 1);
+const type& linkedList<type>::front() const {
+    if (start == nullptr)
+        throw "Exception :-(";
+    return start->data;
+}
+
+template <typename type>
+type& linkedList<type>::back() {
+    if (start == nullptr)
+        throw "Exception :-(";
+    Node<type>* temp = start;
+    while(temp->next != nullptr)
+        temp = temp->next;
+
+    return temp->data;
+}
+
+template <typename type>
+const type& linkedList<type>::back() const {
+    if (start == nullptr)
+        throw "Exception :-(";
+    Node<type>* temp = start;
+    while(temp->next != nullptr)
+        temp = temp->next;
+
+    return temp->data;
 }
 
 template <typename type>
@@ -433,7 +472,7 @@ void linkedList<type>::swap(linkedList& list) {
 template <typename type>
 linkedList<type> linkedList<type>::subList(int start, int length) {
     linkedList<type> list;
-    if (start > _size || start + length > _size)
+    if (start > _size || start + length > _size || start < 0 || length < 0)
         throw "Exception :-(";
     else {
         for (int i = start; i < start + length; i++)
@@ -485,7 +524,7 @@ void linkedList<type>::addAll(const linkedList& list) {
 
 template <typename type>
 void linkedList<type>::addAll(int index, const linkedList& list) {
-    if (index > _size)
+    if (index > _size || index < 0)
         throw "Exception :-(";
     else {
         Node<type>* temp1 = start;
@@ -505,7 +544,7 @@ void linkedList<type>::removeAll(int index, int length) {
     vector<Node<type>*> tresh;
     Node<type>* first;
     Node<type>* temp = start;
-    if (index > _size || index + length > _size)
+    if (index > _size || index + length > _size || index < 0 || length < 0)
         throw "Exception :-(";
     else
         for (int i = 0; i < index + length; i++) {
@@ -733,10 +772,20 @@ linkedList<type> linkedList<type>::operator-() {
     return list;
 }
 
-
-
 template <typename type>
 ostream& operator<<(ostream& out, linkedList<type>& list) {
+    Node<type>* temp = list.start;
+    out << "{ ";
+    while (temp != nullptr) {
+        out << temp->data << " ";
+        temp = temp->next;
+    }
+    out << "}";
+    return out;
+}
+
+template <typename type>
+ostream& operator<<(ostream& out, const linkedList<type>& list) {
     Node<type>* temp = list.start;
     out << "{ ";
     while (temp != nullptr) {

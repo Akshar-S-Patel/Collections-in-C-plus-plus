@@ -25,12 +25,14 @@ public:
 
     /**
     *  Initialization of new arrayList having length <code>size</code>
+    *  @throw "Exception" if <code>size</code> is less then 0
     */
     arrayList(int size);
 
     /**
     *  Initialization of new arrayList having length <code>size</code> and contain
     *  <code>value</code> in each block
+    *  @throw "Exception" if <code>size</code> is less then 0
     */
     arrayList(int size, type value);
 
@@ -60,6 +62,7 @@ public:
 
     /**
     *  remove a value from the end of the arrayList
+    *  @throw "Exception" if arrayList is empty
     */
     void pop_back();
 
@@ -125,13 +128,17 @@ public:
 
     /**
     *  return value of first element of arrayList
+    *  @throw "Exception" if arrayList is empty
     */
-    type front();
+    type& front();
+    const type& front() const;
 
     /**
     *  return value of last element of arrayList
+    *  @throw "Exception" if arrayList is empty
     */
-    type back();
+    type& back();
+    const type& back() const;
 
     /**
     *  Exchange the contents of with the passed arrayList
@@ -245,6 +252,12 @@ public:
     */
     arrayList operator-();
 
+    template <typename T>
+    friend ostream& operator<<(ostream& out, arrayList<T>& list);
+
+    template <typename T>
+    friend ostream& operator<<(ostream& out, arrayList<T>& list);
+
 
 
 private:
@@ -324,6 +337,8 @@ void arrayList<type>::push_back(const type& value) {
 
 template <typename type>
 void arrayList<type>::pop_back() {
+    if (_arrayList == nullptr)
+        throw "Exception :-(";
     remove(_size);
 }
 
@@ -355,7 +370,7 @@ int arrayList<type>::contain(const type& value) const {
 
 template <typename type>
 void arrayList<type>::insert(int index, const type& value) {
-    if (index > _size)
+    if (index > _size || index < 0)
         throw "Exception :-(";
     else {
         if (_capacity == _size) {                       /// Check of your arrayList is too small
@@ -383,7 +398,7 @@ bool arrayList<type>::empty() const {
 
 template <typename type>
 void arrayList<type>::remove(int index) {
-    if (index > _size)
+    if (index > _size || index < 0)
         throw "Exception :-(";
     else {
         if (_size == _capacity / 2) {           /// Check of your arrayList is too big
@@ -420,12 +435,30 @@ int arrayList<type>::capacity() const {
 }
 
 template <typename type>
-type arrayList<type>::front() {
+type& arrayList<type>::front() {
+    if (_arrayList == nullptr)
+        throw "Exception :-(";
     return _arrayList[0];
 }
 
 template <typename type>
-type arrayList<type>::back() {
+const type& arrayList<type>::front() const {
+    if (_arrayList == nullptr)
+        throw "Exception :-(";
+    return _arrayList[0];
+}
+
+template <typename type>
+type& arrayList<type>::back() {
+    if (_arrayList == nullptr)
+        throw "Exception :-(";
+    return _arrayList[_size - 1];
+}
+
+template <typename type>
+const type& arrayList<type>::back() const {
+    if (_arrayList == nullptr)
+        throw "Exception :-(";
     return _arrayList[_size - 1];
 }
 
@@ -447,7 +480,7 @@ void arrayList<type>::swap(arrayList& list) {
 template <typename type>
 arrayList<type> arrayList<type>::subList(int start, int length) {
     arrayList<type> list;
-    if (start > _size || start + length > _size)
+    if (start > _size || start + length > _size || start < 0 || length < 0)
         throw "Exception :-(";
     else {
         for (int i = start; i < start + length; i++)
@@ -487,7 +520,7 @@ void arrayList<type>::addAll(const arrayList& list) {
 
 template <typename type>
 void arrayList<type>::addAll(int index, const arrayList& list){
-    if (index > _size)
+    if (index > _size || index < 0)
         throw "Exception :-(";
     else
         for (int i = 0; i < list._size; i++)
@@ -496,7 +529,7 @@ void arrayList<type>::addAll(int index, const arrayList& list){
 
 template <typename type>
 void arrayList<type>::removeAll(int index, int length) {
-    if (index > _size || index + length > _size)
+    if (index > _size || index + length > _size || index < 0 || length < 0)
         throw "Exception :-(";
     else
         for (int i = index + length - 1; i >= index; i--)
@@ -530,7 +563,7 @@ void arrayList<type>::sort() {
 
 template <typename type>
 type& arrayList<type>::operator[](const int index) const {
-    if (index > _size)
+    if (index > _size || index < 0)
         throw "Exception :-(";
     else
         return _arrayList[index];
@@ -686,6 +719,16 @@ arrayList<type> arrayList<type>::operator-() {
 
 template <typename type>
 ostream& operator<<(ostream& out, arrayList<type>& list) {
+    out << "{ ";
+    for (int i = 0; i < list.size(); i++) {
+            out << list[i] << " ";
+    }
+    out << "}";
+    return out;
+}
+
+template <typename type>
+ostream& operator<<(ostream& out,const arrayList<type>& list) {
     out << "{ ";
     for (int i = 0; i < list.size(); i++) {
             out << list[i] << " ";

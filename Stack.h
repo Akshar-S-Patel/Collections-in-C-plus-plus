@@ -97,6 +97,11 @@ public:
     */
     const type& top();
 
+    /**
+    *  Swap the two Stack
+    */
+    void swap(Stack& stack);
+
     /// Operator Overloading
 
     /**
@@ -217,6 +222,11 @@ int Stack<type>::size() const {
 template <typename type>
 const type& Stack<type>::top() {
     return _elements[_elements.size() - 1];
+}
+
+template <typename type>
+void Stack<type>::swap(Stack<type>& stack) {
+    _elements.swap(stack._elements);
 }
 
 template <typename type>
