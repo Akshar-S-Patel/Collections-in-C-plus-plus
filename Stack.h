@@ -2,7 +2,7 @@
 #define _stack_h
 
 
-#include "ArrayList.h"
+#include "Vector.h"
 #include <iostream>
 #include <initializer_list>
 
@@ -147,9 +147,9 @@ public:
 
     /**
     *  The easiest way to implement a stack is to store the elements in a
-    *  ArrayList. Doing so means that the problems of dynamic memory allocation
+    *  Vector. Doing so means that the problems of dynamic memory allocation
     *  and copy assignment are already solved by the implementation of the
-    *  ArrayList class.
+    *  Vector class.
     */
 
     template <typename T>
@@ -160,7 +160,7 @@ public:
 
 private:
     // member variable (fields)
-    ArrayList<type> _elements;
+    Vector<type> _elements;
 };
 
 template <typename type>
