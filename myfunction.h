@@ -24,7 +24,7 @@ void clrscr() {
 }
 
 
-void ChangeColor(int Text,int Bg) {
+void ChangeColor(int Text,int Bg = 0) {
     /**
     0 black , 1 blue , 2 green , 3 cyan , 4 red , 5 magenta , 6 brown , 7 light gray ,
     8 lark gray , 9 light blue , 10 light green , 11 light cyan , 12 light red ,

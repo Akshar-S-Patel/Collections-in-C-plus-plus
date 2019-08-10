@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <initializer_list>
-#include "linkedList.h"
+#include "LinkedList.h"
 
 using namespace std;
 
@@ -47,6 +47,12 @@ public:
     /// member function (methods)
 
     /**
+    *  Returns the first value in the queue by reference.
+    *  @throw "Exception" for empty queue
+    */
+    const type& front() const;
+
+    /**
     *  Returns the last value in the queue by reference.
     *  @throw "Exception" for empty queue
     */
@@ -75,11 +81,6 @@ public:
     *  Identical in behavior to the == operator.
     */
     bool equals(const Queue<type>& queue) const;
-
-    /**
-    *  Returns the first value in the queue by reference.
-    */
-    const type& front() const;
 
     /**
     *  Returns <code>true</code> if the queue contains no elements.
@@ -157,7 +158,8 @@ public:
     friend ostream& operator<<(ostream& out, const Queue<T>& queue);
 
 private:
-    linkedList<type> _elements;
+    // member variable (fields)
+    LinkedList<type> _elements;
 };
 
 template <typename type>
@@ -172,6 +174,13 @@ Queue<type>::Queue(Queue&& queue) {
 
 template <typename type>
 Queue<type>::Queue(initializer_list<type> queue) : _elements(queue) {
+}
+
+template <typename type>
+const type& Queue<type>::front() const {
+    if (empty())
+        throw "Exception :-(";
+    return _elements.front();
 }
 
 template <typename type>
@@ -203,11 +212,6 @@ void Queue<type>::enqueue(const type& value) {
 template <typename type>
 bool Queue<type>::equals(const Queue<type>& queue) const {
     return _elements.equals(queue._elements);
-}
-
-template <typename type>
-const type& Queue<type>::front() const {
-    return _elements.front();
 }
 
 template <typename type>
@@ -307,19 +311,13 @@ void Queue<type>::operator+=(const type& value) {
 
 template <typename type>
  ostream& operator<<(ostream& out, Queue<type>& queue) {
-    out << "{";
-    for (int i = 0; i < queue._elements.size(); i++)
-        out << " " << queue._elements[i];
-    out << " }";
+    out << queue._elements;
     return out;
  }
 
  template <typename type>
  ostream& operator<<(ostream& out, const Queue<type>& queue) {
-    out << "{";
-    for (int i = 0; i < queue._elements.size(); i++)
-        out << " " << queue._elements[i];
-    out << " }";
+    out << queue._elements;
     return out;
  }
 

@@ -1,8 +1,8 @@
 #ifndef _stack_h
 #define _stack_h
 
-// My includes
-#include "arrayList.h"
+
+#include "ArrayList.h"
 #include <iostream>
 #include <initializer_list>
 
@@ -147,16 +147,20 @@ public:
 
     /**
     *  The easiest way to implement a stack is to store the elements in a
-    *  arrayList. Doing so means that the problems of dynamic memory allocation
+    *  ArrayList. Doing so means that the problems of dynamic memory allocation
     *  and copy assignment are already solved by the implementation of the
-    *  arrayList class.
+    *  ArrayList class.
     */
+
+    template <typename T>
+    friend ostream& operator<<(ostream& out, Stack<T>& stack);
 
     template <typename T>
     friend ostream& operator<<(ostream& out, const Stack<T>& stack);
 
 private:
-    arrayList<type> _elements;
+    // member variable (fields)
+    ArrayList<type> _elements;
 };
 
 template <typename type>
@@ -298,11 +302,14 @@ void Stack<type>::operator+=(const type& value) {
 }
 
 template <typename type>
+ostream& operator<<(ostream& out, Stack<type>& stack) {
+    out << stack._elements;
+    return out;
+}
+
+template <typename type>
 ostream& operator<<(ostream& out, const Stack<type>& stack) {
-    out << "{";
-    for (int i = 0; i < stack._elements.size(); i++)
-        out << " " << stack._elements[i];
-    out << " }";
+    out << stack._elements;
     return out;
 }
 
