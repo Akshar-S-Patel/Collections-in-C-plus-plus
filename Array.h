@@ -443,7 +443,7 @@ public:
     Array operator+(const type& value) {
         Array array(_maxsize + 1);
 
-        array = subList(0);
+        array = *this;
         array.push_back(value);
 
         return array;
@@ -460,7 +460,7 @@ public:
     *  remove value from the end of Array
     *  Identical to pop_back()
     */
-    void operator--() {
+    void operator--(int) {
         pop_back();
     }
 
@@ -468,7 +468,7 @@ public:
     *  remove value from the front of Array
     *  Identical to pop_front()
     */
-    void operator--(int) {
+    void operator--() {
         pop_front();
     }
 
