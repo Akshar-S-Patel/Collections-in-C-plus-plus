@@ -1,5 +1,5 @@
-#ifndef _Vector_h
-#define _Vector_h
+#ifndef _vector_h
+#define _vector_h
 
 #include <iostream>
 #include <string>
@@ -61,10 +61,21 @@ public:
     void push_back(const type& value);
 
     /**
+    *  add a new value to the start of the Vector
+    */
+    void push_front(const type& value);
+
+    /**
     *  remove a value from the end of the Vector
     *  @throw "Exception" if Vector is empty
     */
     void pop_back();
+
+    /**
+    *  remove a value from the start of the Vector
+    *  @throw "Exception" if Vector is empty
+    */
+    void pop_front();
 
     /**
     *  remove all element from Vector
@@ -337,10 +348,22 @@ void Vector<type>::push_back(const type& value) {
 }
 
 template <typename type>
+void Vector<type>::push_front(const type& value) {
+    insert(0, value);
+}
+
+template <typename type>
 void Vector<type>::pop_back() {
     if (_Vector == nullptr)
         throw "Exception :-(";
     remove(_size);
+}
+
+template <typename type>
+void Vector<type>::pop_front() {
+    if (_Vector == nullptr)
+        throw "Exception :-(";
+    remove(0);
 }
 
 template <typename type>
@@ -422,6 +445,8 @@ void Vector<type>::remove(int index) {
 
 template <typename type>
 void Vector<type>::set(int index, const type& value) {
+    if(index < 0 || index + 1 > _size)
+        throw "Exception :-(";
     _Vector[index] = value;
 }
 
@@ -753,4 +778,4 @@ ostream& operator<<(ostream& out, const Vector<type>& list) {
 }
 
 
-#endif /// _Vector_h
+#endif /// _vector_h

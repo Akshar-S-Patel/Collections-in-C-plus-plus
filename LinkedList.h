@@ -1,5 +1,5 @@
-#ifndef _LinkedList_h
-#define _LinkedList_h
+#ifndef _linkedlist_h
+#define _linkedlist_h
 
 #include <iostream>
 #include <vector>
@@ -407,6 +407,8 @@ void LinkedList<type>::remove(int index) {
 
 template <typename type>
 void LinkedList<type>::set(int index, const type& value) {
+    if(index < 0 || index + 1 > _size)
+        throw "Exception :-(";
     Node<type>* temp = start;
     for (int i = 0; i < index; i++)
         temp = temp->next;
@@ -820,4 +822,4 @@ ostream& operator<<(ostream& out, const LinkedList<type>& list) {
 }
 
 
-#endif /// _LinkedList_h
+#endif /// _linkedlist_h
